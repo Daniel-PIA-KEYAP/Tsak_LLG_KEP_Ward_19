@@ -6,6 +6,7 @@
     <title>Registration Form - Miok Kep Tribe of Tsak Valley</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles/realtime-ui.css">
     <style>
         body {
             background-color: #e6f2e6; /* Light green background */
@@ -107,13 +108,30 @@
     </style>
 </head>
 <body>
+    <!-- Toast notification container -->
+    <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
     <main class="register-container">
         <header>
             <h2 class="form-header">Register with KEP - Miok Kep Tribe of Tsak Valley</h2>
         </header>
         <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
         <div id="success-message" class="alert alert-success d-none" role="alert"></div>
+
+        <!-- Saved-progress recovery banner -->
+        <div id="recovery-banner" role="alert"></div>
+
         <form id="registration-form" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
+
+            <!-- Form progress indicator -->
+            <div id="form-progress-container">
+                <div id="form-progress-label">
+                    <span>Form Completion</span>
+                    <span id="form-progress-percent">0%</span>
+                </div>
+                <div id="form-progress-bar"><div id="form-progress-fill"></div></div>
+                <div id="save-status"></div>
+            </div>
             <section class="form-section row">
                 <div class="col-12">
                     <label for="id_photo" class="form-label">Upload Your ID Photo</label>
@@ -129,15 +147,15 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="first_name" class="form-label">First Name</label>
-                        <input type="text" id="first_name" name="first_name" class="form-control" required>
+                        <input type="text" id="first_name" name="first_name" class="form-control" required data-required="true" data-label="First Name">
                     </div>
                     <div class="col-md-6">
                         <label for="surname" class="form-label">Surname</label>
-                        <input type="text" id="surname" name="surname" class="form-control" required>
+                        <input type="text" id="surname" name="surname" class="form-control" required data-required="true" data-label="Surname">
                     </div>
                     <div class="col-md-6">
                         <label for="dob" class="form-label">Date of Birth</label>
-                        <input type="date" id="dob" name="dob" class="form-control" required>
+                        <input type="date" id="dob" name="dob" class="form-control" required data-required="true" data-date="true" data-past-date="true" data-min-age="18" data-label="Date of Birth">
                     </div>
                     <div class="col-md-6">
                         <label for="village" class="form-label">Village</label>
@@ -196,7 +214,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="spouse_dob" class="form-label">Date of Birth</label>
-                            <input type="date" id="spouse_dob" name="spouse_dob" class="form-control">
+                            <input type="date" id="spouse_dob" name="spouse_dob" class="form-control" data-date="true" data-past-date="true" data-min-age="18" data-label="Spouse Date of Birth">
                         </div>
                         <div class="col-md-6">
                             <label for="spouse_age" class="form-label">Age</label>
@@ -328,13 +346,16 @@
             </section>
 
             <aside class="stats-panel">
-                <h5 class="mb-3">Kep Community Statistics</h5>
-                <p>Based on a population of 750 community members</p>
+                <h5 class="mb-3">
+                    Kep Community Statistics
+                    <span id="live-stats-badge"><span class="live-dot"></span>LIVE</span>
+                </h5>
+                <p>Based on a population of <strong><span id="stat-total" class="stats-count">750</span></strong> community members</p>
                 <ul class="list-unstyled">
-                    <li><strong>Employed:</strong> 26.7% (200 members)</li>
-                    <li><strong>Not Employed:</strong> 73.3% (550 members)</li>
-                    <li style="margin-left: 20px;"><strong>Self-Employed:</strong> 13.3% (100 members)</li>
-                    <li style="margin-left: 20px;"><strong>Student:</strong> 20.0% (150 members)</li>
+                    <li><strong>Employed:</strong> <span id="stat-employed-pct" class="stats-count">26.7%</span> (<span id="stat-employed" class="stats-count">200</span> members)</li>
+                    <li><strong>Not Employed:</strong> <span id="stat-not-employed-pct" class="stats-count">73.3%</span> (<span id="stat-not-employed" class="stats-count">550</span> members)</li>
+                    <li style="margin-left: 20px;"><strong>Self-Employed:</strong> <span id="stat-self-employed-pct" class="stats-count">13.3%</span> (<span id="stat-self-employed" class="stats-count">100</span> members)</li>
+                    <li style="margin-left: 20px;"><strong>Student:</strong> <span id="stat-students-pct" class="stats-count">20.0%</span> (<span id="stat-students" class="stats-count">150</span> members)</li>
                 </ul>
             </aside>
 
@@ -343,19 +364,29 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email Address</label>
-                        <input type="email" id="email" name="email" class="form-control" required>
+                        <input type="email" id="email" name="email" class="form-control" required data-required="true" data-email="true" data-label="Email Address">
                     </div>
                     <div class="col-md-6">
                         <label for="mobile" class="form-label">Mobile Number</label>
-                        <input type="tel" id="mobile" name="mobile" class="form-control" pattern="[0-9]{10}" required>
+                        <input type="tel" id="mobile" name="mobile" class="form-control" pattern="[0-9]{10}" required data-required="true" data-tel="true" data-label="Mobile Number">
                     </div>
                     <div class="col-md-6">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group-password">
-                            <input type="password" id="password" name="password" class="form-control" required>
+                            <input type="password" id="password" name="password" class="form-control" required data-required="true" data-min-length="8" data-label="Password">
                             <span class="toggle-password" id="toggle-password-main" aria-label="Show/Hide Password"><i class="fa fa-eye"></i></span>
                         </div>
+                        <div id="password-strength-bar"><div id="password-strength-fill"></div></div>
                         <div id="password-strength" class="password-strength"></div>
+                        <div id="password-requirements">
+                            <ul>
+                                <li id="req-length">   <span class="req-icon"><i class="fa fa-times"></i></span> At least 8 characters</li>
+                                <li id="req-uppercase"><span class="req-icon"><i class="fa fa-times"></i></span> At least one uppercase letter</li>
+                                <li id="req-lowercase"><span class="req-icon"><i class="fa fa-times"></i></span> At least one lowercase letter</li>
+                                <li id="req-number">  <span class="req-icon"><i class="fa fa-times"></i></span> At least one number</li>
+                                <li id="req-symbol">  <span class="req-icon"><i class="fa fa-times"></i></span> At least one special character</li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <label for="cpassword" class="form-label">Confirm Password</label>
@@ -371,12 +402,18 @@
 
             <div class="text-center">
                 <button type="submit" id="submit-btn" class="btn btn-primary">Register Now</button>
+                <span id="unsaved-indicator" class="ms-3"><i class="fa fa-exclamation-circle"></i> Unsaved changes</span>
                 <p class="mt-3">Already have an account? <a href="login.php">Login here</a></p>
             </div>
         </form>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="notification-system.js"></script>
+    <script src="validation-engine.js"></script>
+    <script src="form-state-manager.js"></script>
+    <script src="websocket-client.js"></script>
+    <script src="realtime-handler.js"></script>
     <script>
         const form = document.getElementById('registration-form');
         const dobInput = document.getElementById('dob');
@@ -385,7 +422,6 @@
         const photoInput = document.getElementById('id_photo');
         const photoPreview = document.getElementById('photo-preview');
         const errorMessageDiv = document.getElementById('error-message');
-        const passwordStrengthDiv = document.getElementById('password-strength');
         const maritalStatusRadios = document.querySelectorAll('input[name="marital_status"]');
         const spouseGroup = document.getElementById('spouse-group');
         const childrenGroup = document.getElementById('children-group');
@@ -437,6 +473,11 @@
             errorMessageDiv.textContent = message;
             errorMessageDiv.className = `alert alert-${type}`;
             errorMessageDiv.classList.remove('d-none');
+            // Mirror to toast notifications when available
+            if (typeof NotificationSystem !== 'undefined') {
+                const toastType = type === 'danger' ? 'error' : type === 'success' ? 'success' : 'warning';
+                NotificationSystem.show(message, toastType);
+            }
         }
 
         function hideMessage() {
@@ -552,30 +593,9 @@
         nonEmployedRadios.forEach(radio => radio.addEventListener('change', toggleStudentFields));
         educationLevelSelect.addEventListener('change', toggleEducationLevelFields);
 
-        // Password Strength and Validation
-        function checkPasswordStrength(password) {
-            let strength = 0;
-            if (password.length >= 8) strength++;
-            if (/[A-Z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[^A-Za-z0-9]/.test(password)) strength++;
-
-            passwordStrengthDiv.textContent = '';
-            passwordStrengthDiv.className = 'password-strength';
-            if (password.length === 0) return;
-            if (strength <= 1) {
-                passwordStrengthDiv.textContent = 'Weak';
-                passwordStrengthDiv.classList.add('strength-weak');
-            } else if (strength <= 3) {
-                passwordStrengthDiv.textContent = 'Medium';
-                passwordStrengthDiv.classList.add('strength-medium');
-            } else {
-                passwordStrengthDiv.textContent = 'Strong';
-                passwordStrengthDiv.classList.add('strength-strong');
-            }
-        }
+        // Password Strength and Validation — delegated to realtime-handler.js (ValidationEngine + initPasswordStrength)
+        // Keep inline validatePasswords for is-invalid class compatibility
         passwordInput.addEventListener('input', () => {
-            checkPasswordStrength(passwordInput.value);
             validatePasswords();
         });
         confirmPasswordInput.addEventListener('input', validatePasswords);

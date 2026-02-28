@@ -1,0 +1,251 @@
+/* ============================================================
+   Real-Time UI Styles for KEP Registration Form
+   ============================================================ */
+
+/* ---------- Toast Notification System ---------- */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 360px;
+}
+
+.toast-notification {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    font-size: 0.9rem;
+    opacity: 0;
+    transform: translateX(120%);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    min-width: 260px;
+    cursor: pointer;
+}
+
+.toast-notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast-notification.hiding {
+    opacity: 0;
+    transform: translateX(120%);
+}
+
+.toast-success  { background: #d1e7dd; border-left: 4px solid #198754; color: #0a3622; }
+.toast-error    { background: #f8d7da; border-left: 4px solid #dc3545; color: #58151c; }
+.toast-warning  { background: #fff3cd; border-left: 4px solid #ffc107; color: #664d03; }
+.toast-info     { background: #cff4fc; border-left: 4px solid #0dcaf0; color: #055160; }
+
+.toast-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.toast-body { flex: 1; }
+.toast-close {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.6;
+    padding: 0;
+    color: inherit;
+}
+.toast-close:hover { opacity: 1; }
+
+/* ---------- Form Progress Bar ---------- */
+#form-progress-container {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    padding: 8px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+#form-progress-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #495057;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+#form-progress-bar {
+    height: 6px;
+    border-radius: 3px;
+    background: #e9ecef;
+    overflow: hidden;
+}
+
+#form-progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #28a745, #007bff);
+    transition: width 0.4s ease;
+}
+
+/* ---------- Save Status Indicator ---------- */
+#save-status {
+    font-size: 0.78rem;
+    color: #6c757d;
+    text-align: right;
+    margin-top: 4px;
+    height: 18px;
+    transition: color 0.3s;
+}
+
+#save-status.saving  { color: #fd7e14; }
+#save-status.saved   { color: #198754; }
+#save-status.error   { color: #dc3545; }
+
+/* ---------- Field Validation Feedback ---------- */
+.field-feedback {
+    font-size: 0.8rem;
+    margin-top: 4px;
+    min-height: 18px;
+    display: block;
+    transition: color 0.2s;
+}
+
+.field-feedback.valid   { color: #198754; }
+.field-feedback.invalid { color: #dc3545; }
+
+.form-control.is-valid-rt   { border-color: #198754; }
+.form-control.is-invalid-rt { border-color: #dc3545; }
+
+/* ---------- Email Check Spinner ---------- */
+.email-checking {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 4px;
+}
+
+/* ---------- Password Requirements Checklist ---------- */
+#password-requirements {
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    font-size: 0.8rem;
+    display: none;
+}
+
+#password-requirements.visible { display: block; }
+
+#password-requirements ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#password-requirements li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 0;
+    color: #6c757d;
+    transition: color 0.2s;
+}
+
+#password-requirements li.met { color: #198754; }
+#password-requirements li .req-icon { font-size: 0.75rem; width: 14px; text-align: center; }
+
+/* ---------- Password Strength Bar ---------- */
+#password-strength-bar {
+    height: 5px;
+    border-radius: 3px;
+    background: #e9ecef;
+    margin-top: 6px;
+    overflow: hidden;
+}
+
+#password-strength-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 3px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.strength-0 { width: 0%;   background: transparent; }
+.strength-1 { width: 25%;  background: #dc3545; }
+.strength-2 { width: 50%;  background: #fd7e14; }
+.strength-3 { width: 75%;  background: #ffc107; }
+.strength-4 { width: 100%; background: #198754; }
+
+/* ---------- Live Age Display ---------- */
+.age-display {
+    font-size: 0.82rem;
+    color: #6c757d;
+    margin-top: 3px;
+}
+
+.age-display.invalid { color: #dc3545; }
+
+/* ---------- Real-Time Stats Panel ---------- */
+#live-stats-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    color: #198754;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+#live-stats-badge .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #198754;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.8); }
+}
+
+.stats-count {
+    transition: color 0.4s, font-weight 0.4s;
+}
+
+.stats-count.updated { color: #0d6efd; font-weight: 700; }
+
+/* ---------- Form Recovery Banner ---------- */
+#recovery-banner {
+    display: none;
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    align-items: center;
+    gap: 10px;
+}
+
+#recovery-banner.visible {
+    display: flex;
+}
+
+/* ---------- Unsaved Changes Warning ---------- */
+#unsaved-indicator {
+    display: none;
+    font-size: 0.78rem;
+    color: #856404;
+    padding: 4px 8px;
+    background: #fff3cd;
+    border-radius: 4px;
+}
+
+#unsaved-indicator.visible { display: inline-block; }
