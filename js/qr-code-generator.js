@@ -34,16 +34,25 @@ const QRCodeGenerator = (() => {
 
     /**
      * Generate a registration QR payload.
+     * @param {string} email
+     * @param {string} registrationId
+     * @param {string} token
+     * @param {string} [phone] - PNG standard format, e.g. +67570397996
      */
-    function buildRegistrationPayload(email, registrationId, token) {
-        return {
-            type:  'kep_registration',
+    function buildRegistrationPayload(email, registrationId, token, phone) {
+        const payload = {
+            type:   'kep_registration',
             email,
-            id:    registrationId,
+            id:     registrationId,
             token,
-            ts:    Date.now(),
-            ver:   1
+            ts:     Date.now(),
+            status: 'registered',
+            ver:    1
         };
+        if (phone) {
+            payload.phone = phone;
+        }
+        return payload;
     }
 
     /**
