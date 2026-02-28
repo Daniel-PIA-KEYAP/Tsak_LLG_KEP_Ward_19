@@ -593,8 +593,9 @@
         nonEmployedRadios.forEach(radio => radio.addEventListener('change', toggleStudentFields));
         educationLevelSelect.addEventListener('change', toggleEducationLevelFields);
 
-        // Password Strength and Validation — delegated to realtime-handler.js (ValidationEngine + initPasswordStrength)
-        // Keep inline validatePasswords for is-invalid class compatibility
+        // Confirm password match — adds Bootstrap's is-invalid class for native styling.
+        // The realtime-handler.js module separately adds is-invalid-rt for the custom
+        // validation UI (field-feedback messages). Both work independently.
         passwordInput.addEventListener('input', () => {
             validatePasswords();
         });

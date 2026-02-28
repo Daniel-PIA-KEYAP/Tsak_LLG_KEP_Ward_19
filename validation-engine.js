@@ -210,7 +210,8 @@
         clearState:    clearState,
         calculateAge:  calculateAge,
         attachListeners: attachListeners,
-        evaluatePassword: evaluatePassword
+        evaluatePassword: evaluatePassword,
+        isValidEmail: function (value) { return rules.email(value); }
     };
 
 }(window));

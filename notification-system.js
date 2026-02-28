@@ -6,14 +6,14 @@
 (function (global) {
     'use strict';
 
-    const ICONS = {
+    var ICONS = {
         success: '<i class="fa fa-check-circle"></i>',
         error:   '<i class="fa fa-times-circle"></i>',
         warning: '<i class="fa fa-exclamation-triangle"></i>',
         info:    '<i class="fa fa-info-circle"></i>'
     };
 
-    let container = null;
+    var container = null;
 
     function getContainer() {
         if (!container) {

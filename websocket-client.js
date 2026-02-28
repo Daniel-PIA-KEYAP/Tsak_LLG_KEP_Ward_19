@@ -1,7 +1,10 @@
 /**
  * websocket-client.js
  * Connects to the server-sent events (SSE) endpoint for live statistics updates.
- * Falls back gracefully when SSE is unavailable.
+ * Falls back gracefully to HTTP polling when SSE is unavailable.
+ *
+ * Note: Named 'WebSocketClient' per project spec but implements SSE/polling,
+ * not native WebSocket protocol.
  */
 
 (function (global) {

@@ -85,7 +85,7 @@
         var debouncedCheck = debounce(function () {
             var email = emailInput.value.trim();
             // Skip if not a valid email format
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { return; }
+            if (!ValidationEngine.isValidEmail(email)) { return; }
 
             feedbackEl.textContent = 'Checking availability…';
             feedbackEl.className = 'field-feedback email-checking';
@@ -264,10 +264,8 @@
             el.addEventListener('blur', function () {
                 var start = _fieldTimes[el.name || el.id];
                 if (start) {
-                    var spent = Date.now() - start;
-                    // Available for analytics extensions
+                    // Time spent on field available for future analytics extensions
                     delete _fieldTimes[el.name || el.id];
-                    void spent; // suppress unused-variable warning
                 }
             });
         });

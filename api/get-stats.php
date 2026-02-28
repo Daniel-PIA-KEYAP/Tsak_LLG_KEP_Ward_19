@@ -78,7 +78,7 @@ if ($isStream) {
     if (ob_get_level()) { ob_end_clean(); }
 
     $iterations = 0;
-    $maxIterations = 60; // stop after 60 pushes (~30 minutes at 30s interval)
+    $maxIterations = defined('SSE_MAX_ITERATIONS') ? SSE_MAX_ITERATIONS : 60;
 
     while ($iterations < $maxIterations) {
         $stats = fetchStats($dbHost, $dbName, $dbUser, $dbPass, $dbCharset);
