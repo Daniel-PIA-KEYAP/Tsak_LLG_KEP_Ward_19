@@ -1,0 +1,2 @@
+# Audit log files - generated at runtime, not tracked in git
+logs/*.log

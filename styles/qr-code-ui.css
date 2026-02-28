@@ -1,0 +1,308 @@
+/* QR Code UI Styles - KEP Ward 19 Registration System */
+
+/* QR Code Display Container */
+.qr-code-container {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 400px;
+}
+
+.qr-code-wrapper {
+    display: inline-block;
+    padding: 16px;
+    background-color: #ffffff;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.qr-code-wrapper canvas,
+.qr-code-wrapper img {
+    display: block;
+}
+
+.qr-code-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #333333;
+    margin-bottom: 8px;
+}
+
+.qr-code-subtitle {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+
+.qr-code-token {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: #495057;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 6px 10px;
+    word-break: break-all;
+    margin-bottom: 16px;
+}
+
+/* QR Code Action Buttons */
+.qr-code-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+.qr-code-actions .btn {
+    min-width: 130px;
+}
+
+/* QR Code Scanner Section */
+.qr-scanner-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #000000;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 1;
+}
+
+.qr-scanner-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.qr-scanner-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.qr-scanner-frame {
+    width: 60%;
+    height: 60%;
+    border: 3px solid #28a745;
+    border-radius: 8px;
+    box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.45);
+    position: relative;
+}
+
+.qr-scanner-frame::before,
+.qr-scanner-frame::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: #ffffff;
+    border-style: solid;
+}
+
+.qr-scanner-frame::before {
+    top: -3px;
+    left: -3px;
+    border-width: 4px 0 0 4px;
+    border-radius: 4px 0 0 0;
+}
+
+.qr-scanner-frame::after {
+    bottom: -3px;
+    right: -3px;
+    border-width: 0 4px 4px 0;
+    border-radius: 0 0 4px 0;
+}
+
+.qr-scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(to right, transparent, #28a745, transparent);
+    animation: qr-scan-animation 2s linear infinite;
+}
+
+@keyframes qr-scan-animation {
+    0%   { top: 0; }
+    100% { top: 100%; }
+}
+
+.qr-scanner-status {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 0.875rem;
+    color: #6c757d;
+    min-height: 22px;
+}
+
+.qr-scanner-status.success {
+    color: #198754;
+    font-weight: 600;
+}
+
+.qr-scanner-status.error {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+/* QR Login Page Specific */
+.qr-login-card {
+    max-width: 480px;
+    margin: 60px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.qr-login-tabs .nav-link {
+    color: #495057;
+    font-weight: 500;
+}
+
+.qr-login-tabs .nav-link.active {
+    color: #007bff;
+    font-weight: 700;
+    border-bottom: 2px solid #007bff;
+}
+
+/* QR Verify Page */
+.qr-verify-card {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.user-info-table th {
+    width: 40%;
+    color: #495057;
+    font-weight: 600;
+    background-color: #f8f9fa;
+}
+
+.verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #d1e7dd;
+    color: #0f5132;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.unverified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #fff3cd;
+    color: #664d03;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+/* Registration Confirmation Page */
+.confirm-card {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.confirm-icon {
+    font-size: 4rem;
+    color: #198754;
+    margin-bottom: 16px;
+}
+
+.confirm-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #333333;
+    margin-bottom: 8px;
+}
+
+.confirm-subtitle {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 30px;
+}
+
+/* Expiry notice */
+.qr-expiry-notice {
+    font-size: 0.8rem;
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffecb5;
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+/* Loading spinner for QR */
+.qr-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    flex-direction: column;
+    gap: 12px;
+    color: #6c757d;
+}
+
+/* Print styles */
+@media print {
+    .qr-code-actions,
+    .qr-scanner-container,
+    nav,
+    .btn,
+    footer {
+        display: none !important;
+    }
+
+    .qr-code-container {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+    }
+
+    body {
+        background-color: #ffffff;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .qr-login-card,
+    .qr-verify-card,
+    .confirm-card {
+        margin: 20px 12px;
+        padding: 24px 16px;
+    }
+
+    .qr-code-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+}
