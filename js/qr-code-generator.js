@@ -124,7 +124,7 @@ const QRCodeGenerator = (() => {
             })
             .catch(() => {
                 if (typeof NotificationSystem !== 'undefined')
-                    NotificationSystem.error('Camera access denied. Use file upload instead.');
+                    NotificationSystem.error('Unable to access camera. Please use file upload instead.');
             });
 
         function tick() {

@@ -4,6 +4,7 @@
 const FormStateManager = (() => {
     const STORAGE_KEY = 'kep_form_state';
     const SAVE_INTERVAL = 30000;
+    const MAX_STATE_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
     let saveTimer = null;
     let hasUnsavedChanges = false;
     let saveStatusEl = null;
@@ -65,7 +66,7 @@ const FormStateManager = (() => {
             if (!saved) return;
             const { data, ts } = JSON.parse(saved);
             const age = Date.now() - ts;
-            if (age > 24 * 60 * 60 * 1000) return; // ignore if older than 24h
+            if (age > MAX_STATE_AGE_MS) return; // ignore if older than 24h
             const form = document.getElementById('registration-form');
             if (!form) return;
             Object.entries(data).forEach(([name, value]) => {

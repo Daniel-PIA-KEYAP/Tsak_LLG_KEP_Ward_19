@@ -39,11 +39,12 @@ echo json_encode(fetch_stats());
 
 function fetch_stats(): array {
     $defaults = [
-        'total'         => 750,
-        'employed'      => 200,
-        'unemployed'    => 550,
-        'self_employed' => 100,
-        'student'       => 150
+        // Fallback demo values shown when database is unavailable
+        'total'         => 0,
+        'employed'      => 0,
+        'unemployed'    => 0,
+        'self_employed' => 0,
+        'student'       => 0
     ];
     try {
         $pdo = get_db();

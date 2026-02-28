@@ -12,7 +12,15 @@ define('DB_PASS', getenv('DB_PASS') ?: '');
 // QR Code configuration
 define('QR_TOKEN_LENGTH', 32);
 define('QR_TOKEN_EXPIRY', 86400 * 30); // 30 days in seconds
-define('QR_SECRET_KEY',   getenv('QR_SECRET_KEY') ?: 'kep-ward19-qr-secret-change-in-prod');
+$_qrKey = getenv('QR_SECRET_KEY');
+if (!$_qrKey) {
+    if (getenv('APP_ENV') === 'production') {
+        error_log('CRITICAL: QR_SECRET_KEY environment variable is not set in production.');
+    }
+    $_qrKey = 'kep-ward19-qr-secret-change-in-prod';
+}
+define('QR_SECRET_KEY', $_qrKey);
+unset($_qrKey);
 
 // Real-time features
 define('FORM_STATE_EXPIRY', 86400);        // 24 hours

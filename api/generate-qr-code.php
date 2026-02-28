@@ -50,7 +50,7 @@ try {
     );
     $stmt->execute([$registrationId, $email, $qrToken, json_encode($payload), QR_TOKEN_EXPIRY]);
 } catch (PDOException $e) {
-    // Proceed without DB persistence (token is still valid for session-based validation)
+    json_response(['error' => 'Unable to persist QR code. Please try again later.'], 503);
 }
 
 json_response([
