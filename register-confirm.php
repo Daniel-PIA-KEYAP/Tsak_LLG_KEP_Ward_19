@@ -15,13 +15,20 @@ $csrf  = generate_csrf_token();
 $email = htmlspecialchars($reg['email'] ?? '', ENT_QUOTES, 'UTF-8');
 $regId = htmlspecialchars($reg['registration_id'] ?? '', ENT_QUOTES, 'UTF-8');
 $name  = htmlspecialchars(($reg['first_name'] ?? '') . ' ' . ($reg['surname'] ?? ''), ENT_QUOTES, 'UTF-8');
+$phone = htmlspecialchars($reg['phone'] ?? '', ENT_QUOTES, 'UTF-8');
 
-// Build QR payload (token will be generated client-side via API)
-$qrPayload = json_encode([
-    'email' => $reg['email'] ?? '',
-    'id'    => $reg['registration_id'] ?? '',
-    'csrf'  => $csrf
-]);
+// Build QR payload – prefer the server-generated payload if available
+if (!empty($reg['qr_payload'])) {
+    $qrPayload = json_encode($reg['qr_payload']);
+} else {
+    $qrPayload = json_encode([
+        'email'  => $reg['email'] ?? '',
+        'phone'  => $reg['phone'] ?? '',
+        'id'     => $reg['registration_id'] ?? '',
+        'status' => 'registered',
+        'csrf'   => $csrf
+    ]);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,6 +56,13 @@ $qrPayload = json_encode([
                 <label class="form-label fw-semibold">Registration ID</label>
                 <div class="reg-id-display"><?php echo $regId; ?></div>
             </div>
+
+            <?php if ($phone): ?>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Phone Number</label>
+                <div class="reg-id-display"><?php echo $phone; ?></div>
+            </div>
+            <?php endif; ?>
 
             <!-- QR Code Section -->
             <div class="qr-code-container">

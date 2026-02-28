@@ -136,7 +136,7 @@
         </header>
         <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
         <div id="success-message" class="alert alert-success d-none" role="alert"></div>
-        <form id="registration-form" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
+        <form id="registration-form" action="api/register.php" method="post" enctype="multipart/form-data">
             <section class="form-section row">
                 <div class="col-12">
                     <label for="id_photo" class="form-label">Upload Your ID Photo</label>
@@ -391,7 +391,8 @@
                     </div>
                     <div class="col-md-6">
                         <label for="mobile" class="form-label">Mobile Number</label>
-                        <input type="tel" id="mobile" name="mobile" class="form-control" pattern="[0-9]{10}" required>
+                        <input type="tel" id="mobile" name="mobile" class="form-control" placeholder="+67570XXXXXX" pattern="\+675[0-9]{7,8}" required>
+                        <div class="form-text">PNG format: start with +675 (e.g. +67570397996)</div>
                     </div>
                     <div class="col-md-6">
                         <label for="password" class="form-label">Password</label>
@@ -736,6 +737,13 @@
                     showMessage('Please select an education level.');
                     return false;
                 }
+            }
+            // Check phone number: must be PNG format starting with +675
+            const mobileInput = document.getElementById('mobile');
+            if (!/^\+675[0-9]{7,8}$/.test(mobileInput.value)) {
+                showMessage('Please enter a valid PNG mobile number starting with +675 (e.g. +67570397996).');
+                mobileInput.focus();
+                return false;
             }
             return true;
         }
