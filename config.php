@@ -15,7 +15,9 @@ define('QR_TOKEN_EXPIRY', 86400 * 30); // 30 days in seconds
 $_qrKey = getenv('QR_SECRET_KEY');
 if (!$_qrKey) {
     if (getenv('APP_ENV') === 'production') {
+        http_response_code(500);
         error_log('CRITICAL: QR_SECRET_KEY environment variable is not set in production.');
+        exit('Server configuration error. Please contact the administrator.');
     }
     $_qrKey = 'kep-ward19-qr-secret-change-in-prod';
 }

@@ -88,7 +88,7 @@ const QRCodeGenerator = (() => {
             <h2>KEP Registration QR Code</h2>
             <img src="${src}" alt="QR Code">
             <p>Scan this QR code to access your registration data.</p>
-            <script>window.onload=function(){window.print();window.close();}<\/script>
+            <script>window.onload=function(){window.print();}<\/script>
             </body></html>
         `);
         win.document.close();

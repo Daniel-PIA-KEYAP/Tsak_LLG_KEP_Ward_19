@@ -20,9 +20,9 @@ if ($isStream) {
     flush();
 
     // Keep-alive for a limited time (avoid long-running scripts)
-    $end = time() + 25; // 25 seconds max
+    $end = time() + 55; // ~55 seconds max (typical PHP max_execution_time is 60)
     while (time() < $end) {
-        sleep(10);
+        sleep(5);
         $stats = fetch_stats();
         echo "event: stats\n";
         echo 'data: ' . json_encode($stats) . "\n\n";

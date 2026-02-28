@@ -42,11 +42,14 @@ $payload = [
 
 try {
     $pdo  = get_db();
+    // Only insert if no active (non-expired) QR code exists for this registration
     $stmt = $pdo->prepare(
         'INSERT INTO qr_codes (registration_id, email, token, payload, expires_at, created_at)
          VALUES (?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL ? SECOND), NOW())
-         ON DUPLICATE KEY UPDATE token=VALUES(token), payload=VALUES(payload),
-                                  expires_at=VALUES(expires_at)'
+         ON DUPLICATE KEY UPDATE
+             token     = IF(expires_at < NOW(), VALUES(token),     token),
+             payload   = IF(expires_at < NOW(), VALUES(payload),   payload),
+             expires_at= IF(expires_at < NOW(), VALUES(expires_at),expires_at)'
     );
     $stmt->execute([$registrationId, $email, $qrToken, json_encode($payload), QR_TOKEN_EXPIRY]);
 } catch (PDOException $e) {

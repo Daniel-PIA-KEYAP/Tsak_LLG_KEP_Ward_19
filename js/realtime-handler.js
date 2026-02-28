@@ -149,6 +149,7 @@ const RealtimeHandler = (() => {
                         fb = document.createElement('small');
                         fb.id = 'dob-age-feedback';
                         fb.className = 'text-muted';
+                        fb.setAttribute('aria-live', 'polite');
                         dob.parentNode.appendChild(fb);
                     }
                     fb.textContent = age >= 0 ? `Age: ${age} years` : '';

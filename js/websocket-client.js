@@ -30,6 +30,8 @@ const WebSocketClient = (() => {
 
         evtSource.onerror = () => {
             evtSource.close();
+            // Clear any existing poll timer to avoid running both SSE and polling
+            if (retryTimeout) { clearTimeout(retryTimeout); retryTimeout = null; }
             // Fallback: poll every 30s
             retryTimeout = setTimeout(() => pollStats(), RETRY_DELAY);
         };
