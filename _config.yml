@@ -1,0 +1,9 @@
+# GitHub Pages Configuration
+
+# This file is used to configure GitHub Pages deployment.
+# More settings can be added here as needed.
+
+# Base URL, if needed
+domain: yourdomain.com
+
+# Other configurations can go here
