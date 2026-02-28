@@ -3,61 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Registration Form</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <style>
-        /* QR Code styling */
-        #qrCodeDisplay {
-            margin-top: 20px;
-            text-align: center;
-        }
-
         .modal {
             display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
         }
     </style>
 </head>
 <body>
-    <form id="registrationForm">
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="phone" pattern="^\+675[0-9]{8}$" required>
-        <button type="submit">Register</button>
-    </form>
+    <div class="container mt-5">
+        <form id="registrationForm">
+            <h2>Registration Form</h2>
+            <div class="form-group">
+                <label for="spouse">Spouse:</label>
+                <input type="text" class="form-control" id="spouse" name="spouse">
+            </div>
+            <div class="form-group">
+                <label for="children">Children:</label>
+                <input type="text" class="form-control" id="children" name="children">
+            </div>
+            <div class="form-group">
+                <label for="employment">Employment:</label>
+                <input type="text" class="form-control" id="employment" name="employment">
+            </div>
+            <div class="form-group">
+                <label for="education">Education:</label>
+                <input type="text" class="form-control" id="education" name="education">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone (format +675XXXXXXXX):</label>
+                <input type="tel" class="form-control" id="phone" name="phone" pattern="\+675\d{8,10}" required>
+                <small class="form-text text-muted">Must be 11 to 13 digits with +675 format.</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
 
-    <div id="qrCodeDisplay" style="display: none;">
-        <img id="qrCode" alt="QR Code" />
+    <div class="modal" id="qrcodeModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your QR Code</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="qrcode" class="text-center"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="printBtn" class="btn btn-secondary">Print</button>
+                    <button id="downloadBtn" class="btn btn-secondary">Download</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // QR Code generation functionality
-        document.getElementById("registrationForm").onsubmit = function(event) {
-            event.preventDefault();
-            const phoneNumber = document.getElementById("phone").value;
+        $(document).ready(function() {
+            $('#registrationForm').on('submit', function(e) {
+                e.preventDefault();
+                const email = $(this).find('[name="email"]').val();
+                const phone = $(this).find('[name="phone"]').val();
+                const registrationID = Math.floor(Math.random() * 100000);
+                generateQRCode(email, phone, registrationID);
+            });
 
-            // Generate QR Code (assuming a generateQRCode function exists)
-            const qrCodeSrc = generateQRCode(phoneNumber);
-            document.getElementById("qrCode").src = qrCodeSrc;
-            document.getElementById("qrCodeDisplay").style.display = "block";
+            function generateQRCode(email, phone, registrationID) {
+                var qrcode = new QRCode(document.getElementById("qrcode"), {
+                    text: `Email: ${email}, Phone: ${phone}, Registration ID: ${registrationID}`,
+                    width: 128,
+                    height: 128,
+                });
+                $('#qrcodeModal').modal('show');
+            }
 
-            // Show modal for successful registration (assuming a showModal function exists)
-            showModal("Registration successful!");
-        };
+            $('#printBtn').on('click', function() {
+                var printContents = document.getElementById('qrcode').innerHTML;
+                var w = window.open();
+                w.document.write(printContents);
+                w.print();
+                w.close();
+            });
+
+            $('#downloadBtn').on('click', function() {
+                // QR code download logic here
+            });
+        });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
